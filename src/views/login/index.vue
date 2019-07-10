@@ -28,24 +28,28 @@
 </template>
 
 <script>
-import axios from 'axios'
+import { login } from '@/api/user'
+
 export default {
-  name: 'login',
+  name: 'loginIndex',
   data () {
     return {
       user: {
-        mobile: '',
-        code: ''
+        mobile: '17635158848',
+        code: '123456'
       }
     }
   },
   methods: {
-    handelLogin () {
-      axios({
-        method: 'POST',
-        url: 'http://toutiao.course.itcast.cn/app/v1_0/authorizations',
-        data: this.user
-      })
+    async handelLogin () {
+      // this.login(this.user)
+      try {
+        const data = await login(this.user)
+        console.log(data)
+      } catch (err) {
+        console.log(err)
+        console.log('登录失败')
+      }
     }
   }
 }
@@ -66,7 +70,7 @@ export default {
   }
 }
 .logo_btn{
-  padding: 0 10px;
+  padding: 0 20px;
   margin-top: 30px;
   .van-button--info{
     width: 100%;
