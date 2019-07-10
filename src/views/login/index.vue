@@ -46,6 +46,9 @@ export default {
       try {
         const data = await login(this.user)
         console.log(data)
+
+        // 调用vueX 容器 中的 mutations 中的 setUser  更新 本地存储的user 数据
+        this.$store.commit('setUser',data)
       } catch (err) {
         console.log(err)
         console.log('登录失败')
