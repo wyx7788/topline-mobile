@@ -8,14 +8,22 @@
     <van-cell-group>
       <van-field
         v-model="user.mobile"
+        @input="changeInput"
+        v-validate="'required|numeric'"
+        name="mobile"
         left-icon="contact"
         placeholder="请输入手机号码"
+        :error-message="errors.first('mobile')"
       />
       <van-field
         v-model="user.code"
+        @input="changeInput"
+        v-validate="'required|min:6'"
+        name="code"
         left-icon="goods-collect-o"
         placeholder="请输入密码"
         type="password"
+        :error-message="errors.first('code')"
       />
     </van-cell-group>
     <div class="logo_btn">
@@ -40,15 +48,44 @@ export default {
       }
     }
   },
+  created () {
+    this.configCustomMessages()
+  },
   methods: {
+    changeInput () {
+      console.log('change')
+      // var changeput = document.querySelector('.van-field__error-message')
+      // changeput.style.display = 'none'
+    },
+    configCustomMessages () {
+      const dict = {
+        custom: {
+          mobile: {
+            required: '请输入手机号码',
+            numeric: '必须为数字'
+          },
+          code: {
+            required: '请输入密码',
+            min: '最小长度为6'
+          }
+        }
+      }
+      this.$validator.localize('zh_CN', dict)
+    },
     async handelLogin () {
       // this.login(this.user)
       try {
-        const data = await login(this.user)
-        console.log(data)
+        this.$validator.validate().then(async valid => {
+          if (!valid) {
+            // do stuff if not valid.
+            return
+          }
+          const data = await login(this.user)
+          console.log(data)
 
-        // 调用vueX 容器 中的 mutations 中的 setUser  更新 本地存储的user 数据
-        this.$store.commit('setUser',data)
+          // 调用vueX 容器 中的 mutations 中的 setUser  更新 本地存储的user 数据
+          this.$store.commit('setUser', data)
+        })
       } catch (err) {
         console.log(err)
         console.log('登录失败')
