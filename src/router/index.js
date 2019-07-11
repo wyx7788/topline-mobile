@@ -7,8 +7,14 @@ const router = new Router({
   routes: [
     {
       path: '/',
-      name: 'home',
-      component: () => import('@/views/home')
+      component: () => import('@/views/footer-layout'),
+      children: [
+        {
+          path: '',
+          name: 'home',
+          component: () => import('@/views/home')
+        }
+      ]
     },
     {
       path: '/login',
