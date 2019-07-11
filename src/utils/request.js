@@ -9,7 +9,8 @@ import axios from 'axios'
 //       http:// a.com
 
 const request = axios.create({
-  baseURL: 'http://toutiao.course.itcast.cn'
+  // baseURL: 'http://toutiao.course.itcast.cn'
+  baseURL: 'http://ttapi.research.itcast.cn'
 })
 // Add a request interceptor
 request.interceptors.request.use(function (config) {

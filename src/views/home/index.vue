@@ -1,7 +1,7 @@
 <template>
-<div>
-  HOME
-</div>
+  <div>
+    <van-nav-bar title="Login"/>
+  </div>
 </template>
 
 <script>
