@@ -55,7 +55,10 @@ export default {
   methods: {
     // 上拉加载更多， push数据
     async onLoad () {
+      // 请求延迟
+      await this.$sleep(800)
       // 异步更新数据
+      
       let data = []
       data = await this.loadArticles()
       // 如果没有 时间戳了，并且文章列表为空， 表示没有数据了

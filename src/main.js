@@ -10,6 +10,7 @@ import 'amfe-flexible'
 import './styles/index.less'
 import zhCN from 'vee-validate/dist/locale/zh_CN'
 import VeeValidate, { Validator } from 'vee-validate'
+
 Vue.use(VeeValidate, {
   events: ''
 })
@@ -18,6 +19,14 @@ Validator.localize('zh_CN', zhCN)
 Vue.use(Vant)
 
 Vue.config.productionTip = false
+
+Vue.prototype.$sleep = time => {
+  return new Promise((resolve, reject) => {
+    window.setTimeout(() => {
+      resolve()
+    }, time)
+  })
+}
 
 new Vue({
   router,
