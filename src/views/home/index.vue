@@ -2,7 +2,11 @@
   <div>
     <van-nav-bar title="首页"/>
     <van-tabs v-model="activeChangeIndex">
-      <van-tab title="标签 1">
+      <van-tab
+      :title="item.name"
+      v-for="item in channels"
+      :key="item.id"
+      >
         <van-pull-refresh v-model="isLoading" @refresh="onRefresh">
           <van-list
             v-model="loading"
@@ -18,29 +22,28 @@
           </van-list>
         </van-pull-refresh>
       </van-tab>
-      <van-tab title="标签 2">内容 2</van-tab>
-      <van-tab title="标签 3">内容 3</van-tab>
-      <van-tab title="标签 4">内容 4</van-tab>
-      <van-tab title="标签 5">内容 5</van-tab>
-      <van-tab title="标签 6">内容 6</van-tab>
-      <van-tab title="标签 7">内容 7</van-tab>
-      <van-tab title="标签 8">内容 8</van-tab>
     </van-tabs>
 
   </div>
 </template>
 
 <script>
+import { getUserChannels } from '@/api/channels'
+
 export default {
   name: 'home',
   data () {
     return {
+      channels: [], // 频道列表
       activeChangeIndex: 0,
       list: [],
       loading: false,
       finished: false,
       isLoading: false
     }
+  },
+  created () {
+    this.loadChannels()
   },
   methods: {
     // 向下滚动刷新
@@ -64,8 +67,40 @@ export default {
       setTimeout(() => {
         this.$toast('刷新成功')
         this.isLoading = false
-        this.count++
       }, 500)
+    },
+    // 加载频道列表
+    async loadChannels () {
+      const { user } = this.$store.state
+      let channels = []
+      if (user) {
+        // 已登录
+        const data = await getUserChannels()
+        console.log(data)
+        channels = data.channels
+      } else {
+        // 未登录
+        const locadChannels = JSON.parse(window.localStorage.getItem('channels'))
+        if (locadChannels) {
+          // 如果有本地缓存
+          channels = locadChannels
+        } else {
+          // 如果没有本地缓存
+          const data = await getUserChannels()
+          channels = data.channels
+        }
+      }
+
+      // 修改channels  数据，循环遍历添加我们需要的数据， 将所属文章列表加载到各个频道下
+      channels.forEach(item => {
+        // 用来遍历当前频道的数据和状态
+        item.articles = [] // 存储频道的文章列表
+        item.downPullLoading = false // 下拉刷新状态
+        item.upPullLoading = false // 上拉加载状态
+        item.upPullFinished = false // 是否加载完毕
+      })
+
+      this.channels = channels
     }
   }
 }

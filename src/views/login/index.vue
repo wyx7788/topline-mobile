@@ -104,7 +104,7 @@ export default {
 <style lang='less' scoped>
 .logo{
   text-align: center;
-  margin: 50px auto;
+  margin: 150px auto 50px;
   img{
     width: 40%;
   }
