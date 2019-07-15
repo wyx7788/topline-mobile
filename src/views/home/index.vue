@@ -45,6 +45,17 @@ export default {
       activeChangeIndex: 0,
     }
   },
+  watch: {
+    // 监视登录状态下 ，加载频道以及对应的数据
+    // 记住，凡是 能this  点出来的成员都可以在这里直接监视
+    '$store.state.user' () {
+      // 重新加载用户频道列表
+      this.loadChannels()
+      // this.onLoad()
+      this.activeChannel.upPullLoading = true
+      // 频道数据改变，加载频道对应的数据
+    }
+  },
   created () {
     this.loadChannels()
   },
