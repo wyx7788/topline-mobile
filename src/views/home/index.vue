@@ -2,6 +2,12 @@
   <div>
     <van-nav-bar title="首页"/>
     <van-tabs v-model="activeChangeIndex">
+      <div
+      slot="nav-right"
+      class="nav_right"
+      @click="isChannelShow = true">
+        <van-icon name="wap-nav"/>
+      </div>
       <van-tab
       :title="channelItem.name"
       v-for="channelItem in channels"
@@ -27,15 +33,18 @@
           </van-list>
         </van-pull-refresh>
       </van-tab>
+      <homeChannel
+      :channels="channels"
+      :activeChangeIndex="activeChangeIndex"
+      v-model="isChannelShow"></homeChannel>
     </van-tabs>
-
   </div>
 </template>
 
 <script>
 import { getUserChannels } from '@/api/channels'
 import { getArticles } from '@/api/article'
-import { tmpdir } from 'os';
+import homeChannel from './components/channel'
 
 export default {
   name: 'home',
@@ -43,7 +52,11 @@ export default {
     return {
       channels: [], // 频道列表
       activeChangeIndex: 0,
+      isChannelShow: false
     }
+  },
+  components: {
+    homeChannel
   },
   watch: {
     // 监视登录状态下 ，加载频道以及对应的数据
@@ -73,8 +86,7 @@ export default {
     async onLoad () {
       // 请求延迟
       await this.$sleep(800)
-      // 异步更新数据
-      
+      // 异步更新数据 
       let data = []
       data = await this.loadArticles()
       // 如果没有 时间戳了，并且文章列表为空， 表示没有数据了
@@ -92,13 +104,11 @@ export default {
         this.activeChannel.timestamp = data.pre_timestamp
         data = await this.loadArticles()
       }
-
       // 数据加载好之后，把时间戳 更新到当前频道的最新 时间戳 来加载下页数据
       this.activeChannel.timestamp = data.pre_timestamp
 
       // this.activeChannel.articles = data.results
-      // 不能直接把数据复制，这样就覆盖了原来的数据了
-      
+      // 不能直接把数据复制，这样就覆盖了原来的数据了      
       // 要使用push 追加 把数组的所有元素push 到文章列表
       this.activeChannel.articles.push(...data.results)
       
@@ -122,7 +132,6 @@ export default {
 
         // 当下拉刷新的数据重置后无法 满足一屏，使用onLoad 加载下一页数据
         this.onLoad()
-
         this.activeChannel.downPullSuccessText = "文章更新成功"
 
       } else {
@@ -184,4 +193,19 @@ export default {
 </script>
 
 <style lang='less' scoped>
+.nav_right{
+  position: fixed;
+  right: 0;
+  background: #ffffff;
+  width: 90px;
+  height: 88px;
+  i{
+    margin: 20px 0 0 20px;
+    color: #666
+  }
+}
+.van-popup{
+  border-top-left-radius:10px;
+  border-top-right-radius:10px;
+}
 </style>
