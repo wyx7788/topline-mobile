@@ -8,7 +8,11 @@
       :key="channelItem.id"
       >
         <van-pull-refresh
-        @refresh="onRefresh">
+        v-model="channelItem.downPullLoading"
+        @refresh="onRefresh"
+        :success-text="channelItem.downPullSuccessText"
+        :success-duration="1000"
+        >
           <van-list
             v-model="channelItem.upPullLoading"
             :finished="channelItem.upPullFinished"
@@ -31,6 +35,7 @@
 <script>
 import { getUserChannels } from '@/api/channels'
 import { getArticles } from '@/api/article'
+import { tmpdir } from 'os';
 
 export default {
   name: 'home',
@@ -91,11 +96,33 @@ export default {
       console.log(data)
     },
     // 下拉刷新数据
-    onRefresh () {
-      setTimeout(() => {
-        this.$toast('刷新成功')
-        this.isLoading = false
-      }, 500)
+    async onRefresh () {
+      // 备份上一次最新的数据
+      const timestamp = this.activeChannel.timestamp
+      // 重置为当前 时间戳
+      this.activeChannel.timestamp = Date.now()
+      const data = await this.loadArticles()
+
+      // 如果有最新数据
+      if (data.results.length) {
+        // 替换文章列表， 赋值下一页时间戳
+        this.activeChannel.articles = data.results
+        this.activeChannel.timestamp = data.pre_timestamp
+
+        // 当下拉刷新的数据重置后无法 满足一屏，使用onLoad 加载下一页数据
+        this.onLoad()
+
+        this.activeChannel.downPullSuccessText = "文章更新成功"
+
+      } else {
+        // 如果没有最新数据，提示  已是最新数据
+        this.activeChannel.downPullSuccessText = "已是最新数据"
+      }
+      // 下拉刷新后，取消loading状态
+      this.activeChannel.downPullLoading = false
+
+      // 如果没有最新数据，就把备份的时间戳  恢复过来
+      this.activeChannel.timestamp = timestamp
     },
     // 加载频道列表
     async loadChannels () {
@@ -132,7 +159,7 @@ export default {
       this.channels = channels
     },
     async loadArticles () {
-      const { id:channelId ,timestamp } = this.activeChannel
+      const { id: channelId, timestamp } = this.activeChannel
       const data = await getArticles({
         channelId, // 当前激活频道的ID
         timestamp,
