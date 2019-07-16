@@ -17,7 +17,8 @@
             type="danger"
             plain
             size="mini"
-          >编辑</van-button>
+            @click="isEdit = !isEdit"
+          >{{isEdit ? '编辑' : '完成'}}</van-button>
         </div>
       </div>
       <van-grid
@@ -32,10 +33,10 @@
             <span
             slot="text"
             class="text"
-            :class="{active: index === activeChangeIndex}"
+            :class="{active: index === activeChangeIndex && isEdit}"
             >
             {{channelsItem.name}}</span>
-            <van-icon class="close-icon" name="close" />
+            <van-icon class="close-icon" v-show="!isEdit" name="close" />
           </div>
         </van-grid-item>
       </van-grid>
@@ -84,7 +85,8 @@ export default {
   },
   data () {
     return {
-      allChannels: [] // 所有频道数据
+      allChannels: [], // 所有频道数据
+      isEdit: false
     }
   },
   // 计算属性
