@@ -36,8 +36,10 @@
             :class="{active: index === activeChangeIndex && isEdit}"
             @click="handelUserChannel(channelsItem, index)"
             >
-            {{channelsItem.name}}</span>
+            {{channelsItem.name}}
             <van-icon class="close-icon" v-show="!isEdit" name="close" />
+            </span>
+            
           </div>
         </van-grid-item>
       </van-grid>
@@ -115,6 +117,13 @@ export default {
     },
     deleteChannel (item, index) {
       console.log('deleteChannel')
+      this.channels.splice(index, 1)
+      if (this.user) {
+        // 登录状态下，请求删除频道
+        return
+      }
+      // 未登录状态下，删除本地存储数据，——重新 映射本地存储
+      window.localStorage.setItem('channels', JSON.stringify(this.channels))
     },
     handelUserChannel (item, index) {
       // console.log(item)
@@ -122,10 +131,10 @@ export default {
       if (this.isEdit) {
         // 完成状态下——跳转至频道页，频道高亮显示
         this.changChannel(item, index)
-        return
-      }
-      // 编辑状态下——删除频道
-      this.deleteChannel(item, index)
+      } else {
+        // 编辑状态下——删除频道
+        this.deleteChannel(item, index)
+      }      
     },
     async loadAllChannels () {
       const data = await getAllChannels()
