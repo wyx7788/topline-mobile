@@ -85,6 +85,11 @@ export default {
       // this.onLoad()
       this.activeChannel.upPullLoading = true
       // 频道数据改变，加载频道对应的数据
+    },
+    isChannelShow () {
+      if (!this.isChannelShow) {
+
+      }
     }
   },
   created () {

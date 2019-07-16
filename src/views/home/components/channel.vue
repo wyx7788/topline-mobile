@@ -136,15 +136,25 @@ export default {
         this.deleteChannel(item, index)
       }      
     },
+    // 加载频道数据
     async loadAllChannels () {
       const data = await getAllChannels()
+      data.channels.forEach(item => {
+        // 用来遍历当前频道的数据和状态
+        item.articles = [] // 存储频道的文章列表
+        item.timestamp = Date.now()
+        item.downPullLoading = false // 下拉刷新状态
+        item.upPullLoading = false // 上拉加载状态
+        item.upPullFinished = false // 是否加载完毕
+      })
       console.log(data)
       this.allChannels = data.channels
     },
     // 点击向我的频道添加数据
     handelAddChannel (item) {
       console.log(item)
-      this.channels.push(item) // push向后面追加
+      this.channels.push(item) 
+      // push向后面追加
       // 持久化储存
       if (this.user) {
         // user,计算属性当中
