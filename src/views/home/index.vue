@@ -205,7 +205,10 @@ export default {
   }
 }
 .van-popup{
-  border-top-left-radius:10px;
-  border-top-right-radius:10px;
+  border-top-left-radius:25px;
+  border-top-right-radius:25px;
+  .channel{
+    margin-top: 30px;
+  }
 }
 </style>

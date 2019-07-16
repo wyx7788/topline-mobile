@@ -1,41 +1,71 @@
 <template>
-<div>
   <van-popup
+    :style="{ height: '95%' }"
     :value="value"
+    round
     @input="$emit('input', $event)"
     position="bottom"
-    :style="{ height: '95%' }"
   >
-    <div class="channels">
-      <div class="header">
+    <div class="channel">
+      <div class="channel-head">
         <div>
-          <span>我的频道</span>
-          <span>点击进入频道</span>
+          <span class="title">我的频道</span>
+          <span class="desc">点击进入频道</span>
         </div>
         <div>
-          <button>编辑</button>
+          <van-button
+            type="danger"
+            plain
+            size="mini"
+          >编辑</van-button>
         </div>
       </div>
-      <div class="concent">
-        <van-grid :border="false" :column-num="4">
-          <van-grid-item
-            v-for="(channelsItem,index) in channels"
-            :key="channelsItem.id"
-          >
+      <van-grid
+      class="channel-content"
+      :border="false"
+      :column-num="4" clickable>
+        <van-grid-item
+        v-for="(channelsItem,index) in channels"
+        :key="channelsItem.id"
+        >
+          <div class="info">
             <span
             slot="text"
             class="text"
             :class="{active: index === activeChangeIndex}"
-            >{{channelsItem.name}}</span>
-          </van-grid-item>
-        </van-grid>
+            >
+            {{channelsItem.name}}</span>
+            <van-icon class="close-icon" name="close" />
+          </div>
+        </van-grid-item>
+      </van-grid>
+    </div>
+
+    <div class="channel">
+      <div class="channel-head">
+        <div>
+          <span class="title">频道推荐</span>
+          <span class="desc">点击添加频道</span>
+        </div>
       </div>
+      <van-grid class="channel-content" :border="false" :gutter="10" clickable>
+        <van-grid-item
+          v-for="item in recommendChannels"
+          :key="item.id"
+          @click="handelAddChannel(item)"
+          >
+          <div class="info">
+            <span class="text">{{item.name}}</span>
+          </div>
+        </van-grid-item>
+      </van-grid>
     </div>
   </van-popup>
-</div>
 </template>
 
 <script>
+import { getAllChannels } from '@/api/channels'
+import { mapState } from 'vuex'
 export default {
   name: 'homeChannel',
   props: {
@@ -54,16 +84,86 @@ export default {
   },
   data () {
     return {
+      allChannels: [] // 所有频道数据
+    }
+  },
+  // 计算属性
+  computed: {
+    recommendChannels () {
+      // 遍历当前用户频道的ID  map  生成新的数组
+      const duplicates = this.channels.map(item => item.id)
+      // 筛选出不包含当前用户的id
+      return this.allChannels.filter(item => !duplicates.includes(item.id))
+    },
+    ...mapState(['user'])
+    // vueX  的辅助方法
+    // 用来将 vuex 中的state 中的数据映射到本地计算属性 ，现在就可以  this.user  了
+  },
+  created () {
+    this.loadAllChannels()
+  },
+  methods: {
+    async loadAllChannels () {
+      const data = await getAllChannels()
+      console.log(data)
+      this.allChannels = data.channels
+    },
+    // 点击向我的频道添加数据
+    handelAddChannel (item) {
+      console.log(item)
+      this.channels.push(item) // push向后面追加
+      // 持久化储存
+      if (this.user) {
+        // user,计算属性当中
+        // 登录状态下，将数据请求添加到后端
+        return
+      }
+      // 没有登录状态，将数据持久化存储到本地储存
+      // 本地存储不能修改，只能重写， 更改之后重新存储
+      window.localStorage.setItem('channels',JSON.stringify(this.channels))
     }
   }
 }
 </script>
 
 <style lang='less' scoped>
-.text{
-  font-size: 22px
-}
-.active{
-  color: red
+.channel {
+  .channel-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    .title {
+      font-size: 30px;
+      margin-right: 5px;
+    }
+    .desc {
+      font-size: 22px;
+    }
+    .action {
+      color: red
+    }
+  }
+  .channel-content {
+    margin: 0 20px;
+    .text {
+      font-size: 20px;
+    }
+    .active {
+      color: red;
+    }
+    .close-icon {
+      font-size: 28px;
+      position: absolute;
+      top: -5px;
+      right: -5px;
+      z-index: 999;
+      background-color: #fff;
+    }
+    .info {
+      display: flex;
+      align-items: center;
+    }
+  }
 }
 </style>

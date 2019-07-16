@@ -24,3 +24,6 @@ body {
   margin-bottom: 100px;
   margin-top: 92px;
 }
+.van-tabs__wrap--scrollable .van-tabs__nav {
+  margin-right: 90px;
+}
