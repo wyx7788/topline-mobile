@@ -34,6 +34,7 @@
             slot="text"
             class="text"
             :class="{active: index === activeChangeIndex && isEdit}"
+            @click="handelUserChannel(channelsItem, index)"
             >
             {{channelsItem.name}}</span>
             <van-icon class="close-icon" v-show="!isEdit" name="close" />
@@ -86,7 +87,7 @@ export default {
   data () {
     return {
       allChannels: [], // 所有频道数据
-      isEdit: false
+      isEdit: true
     }
   },
   // 计算属性
@@ -105,6 +106,27 @@ export default {
     this.loadAllChannels()
   },
   methods: {
+    changChannel (item, index) {
+      // console.log('changChannel')
+      // 给父组件传index
+      this.$emit('update:activeChangeIndex', index)
+      // 关闭弹出层，操作父组件v-model  :  v-bind   @input 
+      this.$emit('input', false)
+    },
+    deleteChannel (item, index) {
+      console.log('deleteChannel')
+    },
+    handelUserChannel (item, index) {
+      // console.log(item)
+      // console.log(index)
+      if (this.isEdit) {
+        // 完成状态下——跳转至频道页，频道高亮显示
+        this.changChannel(item, index)
+        return
+      }
+      // 编辑状态下——删除频道
+      this.deleteChannel(item, index)
+    },
     async loadAllChannels () {
       const data = await getAllChannels()
       console.log(data)
@@ -122,7 +144,7 @@ export default {
       }
       // 没有登录状态，将数据持久化存储到本地储存
       // 本地存储不能修改，只能重写， 更改之后重新存储
-      window.localStorage.setItem('channels',JSON.stringify(this.channels))
+      window.localStorage.setItem('channels', JSON.stringify(this.channels))
     }
   }
 }

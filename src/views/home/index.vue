@@ -33,9 +33,27 @@
           </van-list>
         </van-pull-refresh>
       </van-tab>
+      <!-- 
+      :activeChangeIndex="activeChangeIndex"
+      @update:activeChangeIndex="activeChangeIndex=$event"
+
+      简写方式 ——  类似于 V-model
+      :activeChangeIndex.sync="activeChangeIndex"
+      添加 sync 修饰符 
+
+      @update: 绑定的字段 = " 绑定的字段 = $event "
+      其中 update:  是固定的语法
+
+      所以你在子组件中 发布  自定义事件的时候 务必要发送一个名字叫  update: 绑定的字段  事件
+
+      v-model="isChannelShow"
+      相当于：
+            v-bind="isChannelShow"
+            @input="isChannelShow = $event"
+      -->
       <homeChannel
       :channels="channels"
-      :activeChangeIndex="activeChangeIndex"
+      :activeChangeIndex.sync="activeChangeIndex"
       v-model="isChannelShow"></homeChannel>
     </van-tabs>
   </div>
@@ -106,12 +124,10 @@ export default {
       }
       // 数据加载好之后，把时间戳 更新到当前频道的最新 时间戳 来加载下页数据
       this.activeChannel.timestamp = data.pre_timestamp
-
       // this.activeChannel.articles = data.results
       // 不能直接把数据复制，这样就覆盖了原来的数据了      
       // 要使用push 追加 把数组的所有元素push 到文章列表
       this.activeChannel.articles.push(...data.results)
-      
       // 数据加载完毕后  取消上了loading
       this.activeChannel.upPullLoading = false
       console.log(data)
@@ -132,11 +148,10 @@ export default {
 
         // 当下拉刷新的数据重置后无法 满足一屏，使用onLoad 加载下一页数据
         this.onLoad()
-        this.activeChannel.downPullSuccessText = "文章更新成功"
-
+        this.activeChannel.downPullSuccessText = '文章更新成功'
       } else {
         // 如果没有最新数据，提示  已是最新数据
-        this.activeChannel.downPullSuccessText = "已是最新数据"
+        this.activeChannel.downPullSuccessText = '已是最新数据'
       }
       // 下拉刷新后，取消loading状态
       this.activeChannel.downPullLoading = false
