@@ -29,7 +29,7 @@
               v-for="activeItem in channelItem.articles"
               :key="activeItem.art_id"
               :title="activeItem.title"
-            >
+            >            
               <!-- 插入详情  slot  -->
               <div slot="label">
                 <!-- 图片 -->
@@ -38,7 +38,16 @@
                     <van-grid-item
                     v-for="(img, index) in activeItem.cover.images"
                     :key="index">
-                      <van-image :src="img" />
+                      <van-image
+                      class="articles_img"
+                      :src="img"
+                      fit="fill"                   
+                      lazy-load>
+                        <template v-slot:loading>
+                          <van-loading type="spinner" size="20" />
+                        </template>
+                        <template v-slot:error>加载失败</template>
+                      </van-image>
                     </van-grid-item>
                   </van-grid>
                 </template>             
@@ -252,5 +261,8 @@ export default {
   .channel{
     margin-top: 30px;
   }
+}
+.articles_img{
+  height: 160px;
 }
 </style>

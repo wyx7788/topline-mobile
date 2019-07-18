@@ -4,7 +4,7 @@ import App from './App.vue'
 import router from './router'
 import store from './store'
 
-import Vant from 'vant'
+import Vant, { Lazyload } from 'vant'
 import 'vant/lib/index.css'
 import 'amfe-flexible'
 import './styles/index.less'
@@ -17,6 +17,7 @@ Vue.use(VeeValidate, {
 
 Validator.localize('zh_CN', zhCN)
 Vue.use(Vant)
+Vue.use(Lazyload);
 
 Vue.config.productionTip = false
 
