@@ -29,7 +29,29 @@
               v-for="activeItem in channelItem.articles"
               :key="activeItem.art_id"
               :title="activeItem.title"
-            />
+            >
+              <!-- 插入详情  slot  -->
+              <div slot="label">
+                <!-- 图片 -->
+                <template v-if="activeItem.cover.type">
+                  <van-grid :border="false" :column-num="3">
+                    <van-grid-item
+                    v-for="(img, index) in activeItem.cover.images"
+                    :key="index">
+                      <van-image :src="img" />
+                    </van-grid-item>
+                  </van-grid>
+                </template>             
+                <!-- 图片 -->
+                <p>
+                  <span>{{activeItem.aut_name}}</span>
+                  &nbsp;
+                  <span>{{activeItem.comm_count}}评论</span>
+                  &nbsp;
+                  <span>{{activeItem.pubdate}}</span>
+                </p>
+              </div>
+            </van-cell>
           </van-list>
         </van-pull-refresh>
       </van-tab>
