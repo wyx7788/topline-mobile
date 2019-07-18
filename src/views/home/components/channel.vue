@@ -5,6 +5,7 @@
     round
     @input="$emit('input', $event)"
     position="bottom"
+    @closed="closedPopup"
   >
     <div class="channel">
       <div class="channel-head">
@@ -37,7 +38,10 @@
             @click="handelUserChannel(channelsItem, index)"
             >
             {{channelsItem.name}}
-            <van-icon class="close-icon" v-show="!isEdit" name="close" />
+            <van-icon
+            class="close-icon"
+            v-show="!isEdit && !aliveChannels.includes(channelsItem.name)"
+            name="close" />
             </span>
             
           </div>
@@ -68,8 +72,13 @@
 </template>
 
 <script>
-import { getAllChannels } from '@/api/channels'
+import { 
+  getAllChannels, 
+  deletedUserChannel, 
+  resetUserChannels 
+} from '@/api/channels'
 import { mapState } from 'vuex'
+
 export default {
   name: 'homeChannel',
   props: {
@@ -89,7 +98,8 @@ export default {
   data () {
     return {
       allChannels: [], // 所有频道数据
-      isEdit: true
+      isEdit: true,
+      aliveChannels: ['推荐']
     }
   },
   // 计算属性
@@ -108,6 +118,9 @@ export default {
     this.loadAllChannels()
   },
   methods: {
+    closedPopup () {
+      this.isEdit = true
+    },
     changChannel (item, index) {
       // console.log('changChannel')
       // 给父组件传index
@@ -115,26 +128,29 @@ export default {
       // 关闭弹出层，操作父组件v-model  :  v-bind   @input 
       this.$emit('input', false)
     },
-    deleteChannel (item, index) {
+    async deleteChannel (item, index) {
       console.log('deleteChannel')
       this.channels.splice(index, 1)
       if (this.user) {
         // 登录状态下，请求删除频道
+        await deletedUserChannel(item.id)
         return
       }
       // 未登录状态下，删除本地存储数据，——重新 映射本地存储
       window.localStorage.setItem('channels', JSON.stringify(this.channels))
     },
     handelUserChannel (item, index) {
-      // console.log(item)
+      // console.log(this.aliveChannels.includes(item.name))
       // console.log(index)
       if (this.isEdit) {
         // 完成状态下——跳转至频道页，频道高亮显示
         this.changChannel(item, index)
       } else {
         // 编辑状态下——删除频道
-        this.deleteChannel(item, index)
-      }      
+        // 判断是否是推荐频道
+        console.log(this.aliveChannels)
+        !this.aliveChannels.includes(item.name) && this.deleteChannel(item, index)
+      }
     },
     // 加载频道数据
     async loadAllChannels () {
@@ -151,14 +167,23 @@ export default {
       this.allChannels = data.channels
     },
     // 点击向我的频道添加数据
-    handelAddChannel (item) {
-      console.log(item)
-      this.channels.push(item) 
+    async handelAddChannel (item) {
+      // console.log(item)
+      this.channels.push(item)
       // push向后面追加
       // 持久化储存
       if (this.user) {
         // user,计算属性当中
+
+        const data = this.channels.slice(1).map((item, index) => {
+          return {
+            id: item.id, // 频道id
+            seq: index + 2 // 频道序号
+          }
+        })
+        console.log(data)
         // 登录状态下，将数据请求添加到后端
+        await resetUserChannels(data)
         return
       }
       // 没有登录状态，将数据持久化存储到本地储存
