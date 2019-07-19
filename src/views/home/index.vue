@@ -57,7 +57,7 @@
                   &nbsp;
                   <span>{{activeItem.comm_count}}评论</span>
                   &nbsp;
-                  <span>{{activeItem.pubdate}}</span>
+                  <span>{{activeItem.pubdate | relativeTime}}</span>
                 </p>
               </div>
             </van-cell>
