@@ -58,6 +58,10 @@
                   <span>{{activeItem.comm_count}}评论</span>
                   &nbsp;
                   <span>{{activeItem.pubdate | relativeTime}}</span>
+                  <van-icon
+                  class="close"
+                  name="close"
+                  @click="isMoreActrionShow = true"/>
                 </p>
               </div>
             </van-cell>
@@ -87,6 +91,7 @@
       :activeChangeIndex.sync="activeChangeIndex"
       v-model="isChannelShow"></homeChannel>
     </van-tabs>
+    <moreAction v-model="isMoreActrionShow"></moreAction>
   </div>
 </template>
 
@@ -94,18 +99,20 @@
 import { getUserChannels } from '@/api/channels'
 import { getArticles } from '@/api/article'
 import homeChannel from './components/channel'
-
+import moreAction from './components/more-action'
 export default {
   name: 'home',
   data () {
     return {
       channels: [], // 频道列表
       activeChangeIndex: 0,
-      isChannelShow: false
+      isChannelShow: false,
+      isMoreActrionShow: false
     }
   },
   components: {
-    homeChannel
+    homeChannel,
+    moreAction
   },
   watch: {
     // 监视登录状态下 ，加载频道以及对应的数据
@@ -264,5 +271,9 @@ export default {
 }
 .articles_img{
   height: 160px;
+}
+.close{
+  float: right;
+  font-size: 30px;
 }
 </style>
