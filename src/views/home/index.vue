@@ -27,7 +27,7 @@
           >
             <van-cell
               v-for="activeItem in channelItem.articles"
-              :key="activeItem.art_id"
+              :key="activeItem.art_id.toString()"
               :title="activeItem.title"
             >            
               <!-- 插入详情  slot  -->
