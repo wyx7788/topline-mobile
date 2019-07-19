@@ -61,7 +61,8 @@
                   <van-icon
                   class="close"
                   name="close"
-                  @click="isMoreActrionShow = true"/>
+                  @click="handleMoreShow(activeItem)"
+                  />
                 </p>
               </div>
             </van-cell>
@@ -91,7 +92,12 @@
       :activeChangeIndex.sync="activeChangeIndex"
       v-model="isChannelShow"></homeChannel>
     </van-tabs>
-    <moreAction v-model="isMoreActrionShow"></moreAction>
+    <moreAction
+    v-model="isMoreActrionShow"
+    :current-article="currentArticle"
+    @remove-article="handleRemoveCurrentArticle"
+    ></moreAction>
+    <!-- 自定义事件 绑定 remove-article-->
   </div>
 </template>
 
@@ -100,6 +106,7 @@ import { getUserChannels } from '@/api/channels'
 import { getArticles } from '@/api/article'
 import homeChannel from './components/channel'
 import moreAction from './components/more-action'
+import { close } from 'fs';
 export default {
   name: 'home',
   data () {
@@ -107,7 +114,8 @@ export default {
       channels: [], // 频道列表
       activeChangeIndex: 0,
       isChannelShow: false,
-      isMoreActrionShow: false
+      isMoreActrionShow: false,
+      currentArticle: null
     }
   },
   components: {
@@ -209,7 +217,7 @@ export default {
       if (user) {
         // 已登录
         const data = await getUserChannels()
-        console.log(data)
+        // console.log(data)
         channels = data.channels
       } else {
         // 未登录
@@ -245,6 +253,20 @@ export default {
       })
       // 返回数据
       return data
+    },
+    handleMoreShow (activeItem) {
+      this.currentArticle = activeItem
+      this.isMoreActrionShow = true
+    },
+    // 去除不感兴趣的文章
+    handleRemoveCurrentArticle () {
+      const acitiveArticle = this.activeChannel.articles
+      const delIndex = acitiveArticle.findIndex(item => item === this.currentArticle)
+      // console.log(delIndex)
+      acitiveArticle.splice(delIndex, 1)
+      this.isMoreActrionShow = false
+      // console.log(acitiveArticle)
+      this.$toast.success('操作成功')
     }
   }
 }

@@ -6,7 +6,7 @@
     :showConfirmButton="false"
     closeOnClickOverlay>
       <van-cell-group v-if="isReportShow">
-        <van-cell icon="location-o" title="不感兴趣" />
+        <van-cell icon="location-o" title="不感兴趣" @click="handelDisLikes" />
         <van-cell
         icon="location-o"
         is-link
@@ -31,17 +31,35 @@
 </template>
 
 <script>
+import { disLikesArticle } from "@/api/article";
 export default {
   name: 'moreAction',
   props: {
     value: {
       type: Boolean,
       default: false
+    },
+    currentArticle: {
+      type: Object
     }
   },
   data () {
     return {
       isReportShow: true
+    }
+  },
+  methods: {
+    async handelDisLikes () {   
+      try {
+        await disLikesArticle(this.currentArticle.art_id)
+        // console.log(this.currentArticle)
+        // 发送请求后，文章列表移除当前文章
+        // 发送自定义事件移除文章 @remove-article
+        this.$emit('remove-article')
+      } catch (error) {
+        console.log(error)
+        this.$toast.fail('操作失败')
+      }
     }
   }
 }
