@@ -43,7 +43,6 @@
             v-show="!isEdit && !aliveChannels.includes(channelsItem.name)"
             name="close" />
             </span>
-            
           </div>
         </van-grid-item>
       </van-grid>
@@ -72,10 +71,10 @@
 </template>
 
 <script>
-import { 
-  getAllChannels, 
-  deletedUserChannel, 
-  resetUserChannels 
+import {
+  getAllChannels,
+  deletedUserChannel,
+  resetUserChannels
 } from '@/api/channels'
 import { mapState } from 'vuex'
 
@@ -125,7 +124,7 @@ export default {
       // console.log('changChannel')
       // 给父组件传index
       this.$emit('update:activeChangeIndex', index)
-      // 关闭弹出层，操作父组件v-model  :  v-bind   @input 
+      // 关闭弹出层，操作父组件v-model  :  v-bind   @input
       this.$emit('input', false)
     },
     async deleteChannel (item, index) {
