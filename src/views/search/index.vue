@@ -9,10 +9,11 @@
 
   <!-- 联想建议 -->
   <van-cell-group>
-    <van-cell title="单元格" icon="search" />
-    <van-cell title="单元格" icon="search" />
-    <van-cell title="单元格" icon="search" />
-    <van-cell title="单元格" icon="search" />
+    <van-cell
+    v-for="item in suggestion"
+    :key="item"
+    :title="item"
+    icon="search" />
   </van-cell-group>
   <!-- /联想建议 -->
 
@@ -22,10 +23,32 @@
 </template>
 
 <script>
+import { getSuggestion } from '@/api/search'
 export default {
   name: 'searchIndex',
   data () {
-    return {}
+    return {
+      serchText: '',
+      suggestion: []
+    }
+  },
+  watch: {
+    // 监视输入框数据改变，数据发生改变，发送请求联想建议
+    async serchText (newValue) {
+      // 去除首尾空格
+      const text = newValue.trim()
+      // 数据为空时，不做任何操作
+      if (!text.length) {
+        return
+      }
+      try {
+        const data = await getSuggestion(text)
+        console.log(data)
+        this.suggestion = data.options
+      } catch (err) {
+        console.log(err)
+      }
+    }
   }
 }
 </script>

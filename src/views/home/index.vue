@@ -29,7 +29,7 @@
               v-for="activeItem in channelItem.articles"
               :key="activeItem.art_id.toString()"
               :title="activeItem.title"
-            >            
+            >
               <!-- 插入详情  slot  -->
               <div slot="label">
                 <!-- 图片 -->
@@ -41,7 +41,7 @@
                       <van-image
                       class="articles_img"
                       :src="img"
-                      fit="fill"                   
+                      fit="fill"
                       lazy-load>
                         <template v-slot:loading>
                           <van-loading type="spinner" size="20" />
@@ -50,7 +50,7 @@
                       </van-image>
                     </van-grid-item>
                   </van-grid>
-                </template>             
+                </template>
                 <!-- 图片 -->
                 <p>
                   <span>{{activeItem.aut_name}}</span>
@@ -69,13 +69,13 @@
           </van-list>
         </van-pull-refresh>
       </van-tab>
-      <!-- 
+      <!--
       :activeChangeIndex="activeChangeIndex"
       @update:activeChangeIndex="activeChangeIndex=$event"
 
       简写方式 ——  类似于 V-model
       :activeChangeIndex.sync="activeChangeIndex"
-      添加 sync 修饰符 
+      添加 sync 修饰符
 
       @update: 绑定的字段 = " 绑定的字段 = $event "
       其中 update:  是固定的语法
@@ -107,7 +107,7 @@ import { getUserChannels } from '@/api/channels'
 import { getArticles } from '@/api/article'
 import homeChannel from './components/channel'
 import moreAction from './components/more-action'
-import { close } from 'fs';
+
 export default {
   name: 'home',
   data () {
@@ -132,7 +132,7 @@ export default {
       // this.onLoad()
       this.activeChannel.upPullLoading = true
       // 频道数据改变，加载频道对应的数据
-    },
+    }
     // isChannelShow () {
     //   if (!this.isChannelShow && !this.activeChannel.articles,length) {
 
@@ -156,7 +156,7 @@ export default {
     async onLoad () {
       // 请求延迟
       await this.$sleep(800)
-      // 异步更新数据 
+      // 异步更新数据
       let data = []
       data = await this.loadArticles()
       // 如果没有 时间戳了，并且文章列表为空， 表示没有数据了
@@ -177,7 +177,7 @@ export default {
       // 数据加载好之后，把时间戳 更新到当前频道的最新 时间戳 来加载下页数据
       this.activeChannel.timestamp = data.pre_timestamp
       // this.activeChannel.articles = data.results
-      // 不能直接把数据复制，这样就覆盖了原来的数据了      
+      // 不能直接把数据复制，这样就覆盖了原来的数据了
       // 要使用push 追加 把数组的所有元素push 到文章列表
       this.activeChannel.articles.push(...data.results)
       // 数据加载完毕后  取消上了loading
