@@ -12,7 +12,7 @@
         is-link
         title="反馈垃圾内容"
         @click="isReportShow = false"/>
-        <van-cell icon="location-o" title="拉黑作者" />
+        <van-cell icon="location-o" title="拉黑作者" @click="handelBlackLists" />
       </van-cell-group>
       <van-cell-group v-else>
         <van-cell icon="arrow-left" @click="isReportShow = true" />
@@ -28,7 +28,8 @@
 </template>
 
 <script>
-import { disLikesArticle, reportArticle } from "@/api/article";
+import { disLikesArticle, reportArticle } from "@/api/article"
+import { blackoutUsers } from '@/api/user'
 export default {
   name: 'moreAction',
   props: {
@@ -44,7 +45,7 @@ export default {
     return {
       isReportShow: true,
       reportTypes: [
-        { label: '举报类型',  value: 0 },
+        { label: '其他问题',  value: 0 },
         { label: '标题夸张',  value: 1 },
         { label: '低俗色情',  value: 2 },
         { label: '错别字多',  value: 3 },
@@ -90,6 +91,18 @@ export default {
         } else {
           this.$toast.fail('举报失败')
         }
+      }
+    },
+    // 拉黑用户
+    async handelBlackLists () {
+      try {
+        await blackoutUsers(this.currentArticle.aut_id)
+        this.$toast.success('操作成功')
+        // 自定义事件——拉黑成功 移除当前文章
+        this.$emit('blackout-users')
+      } catch (err) {
+        console.log(err)
+        this.$toast.fail('操作失败')
       }
     }
   }

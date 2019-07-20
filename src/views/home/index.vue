@@ -96,6 +96,7 @@
     v-model="isMoreActrionShow"
     :current-article="currentArticle"
     @remove-article="handleRemoveCurrentArticle"
+    @blackout-users="handleRemoveCurrentArticle"
     ></moreAction>
     <!-- 自定义事件 绑定 remove-article-->
   </div>
