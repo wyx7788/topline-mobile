@@ -5,7 +5,7 @@
         <router-link class="searchInputbtn" to="/search">
           <van-icon name="search" />请输入关键字
         </router-link>
-      </div>  
+      </div>
     </van-nav-bar>
     <van-tabs v-model="activeChangeIndex">
       <div

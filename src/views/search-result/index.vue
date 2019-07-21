@@ -18,7 +18,7 @@
         :key="item.art_id"
         :title="item.title"
       />
-    </van-list>  
+    </van-list>
   </div>
 </template>
 
@@ -40,6 +40,14 @@ export default {
       return this.$route.params.q
     }
   },
+  // keep-alive 组件激活时调用
+  // activated () {}
+
+  // 组件停用时调用
+  deactivated () {
+    // 手动销毁当前实例，禁用缓存。。。
+    this.$destroy()
+  },
   methods: {
     async onLoad () {
       // 异步更新数据
@@ -49,7 +57,6 @@ export default {
         per_page: this.perPage,
         q: this.q
       })
-      
       // 没有数据
       if (!data.results.length) {
         // 停止加载loading
