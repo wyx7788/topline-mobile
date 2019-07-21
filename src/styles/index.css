@@ -12,7 +12,9 @@ body {
   top: 0;
   width: 100%;
 }
-.van-nav-bar .van-nav-bar__title {
+.van-nav-bar .van-nav-bar__title,
+.van-nav-bar .van-icon-arrow-left,
+.van-nav-bar .van-nav-bar__text {
   color: #fff;
 }
 .van-tabs--line .van-tabs__wrap {

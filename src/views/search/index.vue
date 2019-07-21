@@ -6,7 +6,8 @@
     placeholder="请输入搜索关键词"
     show-action
     v-model="serchText"
-    @search="handelSearch(serchText)" />
+    @search="handelSearch(serchText)"
+    @cancel="$router.push({name:'home'})" />
   </form>
   <!-- /搜索框 -->
 
@@ -73,7 +74,7 @@ export default {
     },
     // 搜索事件：搜索框输入法搜索按钮——点击联想建议搜索——跳转搜索结果页面
     handelSearch (queryText) {
-      if (!queryText.length) {
+      if (!queryText && !queryText.length) {
         return
       }
       // 跳转到搜索结果页面

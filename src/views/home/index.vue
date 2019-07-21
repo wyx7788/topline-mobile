@@ -1,6 +1,12 @@
 <template>
   <div>
-    <van-nav-bar title="首页"/>
+    <van-nav-bar>
+      <div class="searchInput" slot="title">
+        <router-link class="searchInputbtn" to="/search">
+          <van-icon name="search" />请输入关键字
+        </router-link>
+      </div>  
+    </van-nav-bar>
     <van-tabs v-model="activeChangeIndex">
       <div
       slot="nav-right"
@@ -298,5 +304,27 @@ export default {
 .close{
   float: right;
   font-size: 30px;
+}
+.van-nav-bar__title{
+  max-width: 90%;
+}
+.searchInput{
+  background: #ffffff;
+  margin-top: 15px;
+  border-radius: 10px;
+  .searchInputbtn{
+    display: block;
+    font-size: 27px;
+    color: #888;
+    height: 64px;
+    line-height: 64px;
+    text-align: left;
+    padding-left: 20px;
+  }
+  .van-icon-search{
+    font-size: 36px;
+    color: #888;
+    margin-right:15px;
+  }
 }
 </style>
