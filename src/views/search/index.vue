@@ -1,10 +1,13 @@
 <template>
 <div>
   <!-- 搜索框 -->
-  <van-search
-  placeholder="请输入搜索关键词"
-  show-action
-  v-model="serchText" />
+  <form action="/">
+    <van-search
+    placeholder="请输入搜索关键词"
+    show-action
+    v-model="serchText"
+    @search="handelSearch(serchText)" />
+  </form>
   <!-- /搜索框 -->
 
   <!-- 联想建议 -->
@@ -12,7 +15,8 @@
     <van-cell
     v-for="item in suggestion"
     :key="item"
-    icon="search">
+    icon="search"
+    @click="handelSearch(item)">
       <div slot="title" v-html="highlight(item, serchText)"></div>
       <!--
         过滤器，只能用在 {{}} 和 v-bind 中
@@ -63,10 +67,25 @@ export default {
     highlight (text, keyword) {
       // toLowerCase: 全部转成小写字母
       // 截取关键字
-      return text.toLowerCase().split(keyword)
-      .join(
+      return text.toLowerCase().split(keyword).join(
         `<span style="color: red">${keyword}</span>`
       )
+    },
+    // 搜索事件：搜索框输入法搜索按钮——点击联想建议搜索——跳转搜索结果页面
+    handelSearch (queryText) {
+      if (!queryText.length) {
+        return
+      }
+      // 跳转到搜索结果页面
+      this.$router.push({
+        path: `/search/${queryText}`
+      })
+      // this.$router.push({
+      //   name: 'search-result',
+      //   params: {
+      //     q: queryText
+      //   }
+      // })
     }
   }
 }

@@ -25,6 +25,11 @@ const router = new Router({
       path: '/search',
       name: 'search',
       component: () => import('@/views/search')
+    },
+    {
+      path: '/search/:q',
+      name: 'search-result',
+      component: () => import('@/views/search-result')
     }
   ]
 })
