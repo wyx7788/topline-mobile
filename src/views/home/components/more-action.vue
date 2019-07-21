@@ -71,6 +71,7 @@ export default {
         console.log(err)
         this.$toast.fail('操作失败')
       }
+      this.$emit('input', false)
     },
     async handelReportArcitle (type) {
       try {
@@ -110,6 +111,7 @@ export default {
         console.log(err)
         this.$toast.fail('操作失败')
       }
+      this.$emit('input', false)
     }
   }
 }

@@ -12,8 +12,14 @@
     <van-cell
     v-for="item in suggestion"
     :key="item"
-    :title="item"
-    icon="search" />
+    icon="search">
+      <div slot="title" v-html="highlight(item, serchText)"></div>
+      <!--
+        过滤器，只能用在 {{}} 和 v-bind 中
+        item ： 循环体文本
+        serchText： 输入框内容（关键字）
+      -->
+    </van-cell>
   </van-cell-group>
   <!-- /联想建议 -->
 
@@ -52,6 +58,16 @@ export default {
         console.log(err)
       }
     }, 500)
+  },
+  methods: {
+    highlight (text, keyword) {
+      // toLowerCase: 全部转成小写字母
+      // 截取关键字
+      return text.toLowerCase().split(keyword)
+      .join(
+        `<span style="color: red">${keyword}</span>`
+      )
+    }
   }
 }
 </script>
