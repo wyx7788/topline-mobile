@@ -15,9 +15,44 @@
     >
       <van-cell
         v-for="item in searchResultlList"
-        :key="item.art_id"
+        :key="item.art_id.toString()"
         :title="item.title"
-      />
+      >
+        <!-- 插入详情  slot  -->
+        <div slot="label">
+          <!-- 图片 -->
+          <template v-if="item.cover.type">
+            <van-grid :border="false" :column-num="3">
+              <van-grid-item
+              v-for="(img, index) in item.cover.images"
+              :key="index">
+                <van-image
+                class="articles_img"
+                :src="img"
+                fit="fill"
+                lazy-load>
+                  <template v-slot:loading>
+                    <van-loading type="spinner" size="20" />
+                  </template>
+                </van-image>
+              </van-grid-item>
+            </van-grid>
+          </template>
+          <!-- 图片 -->
+          <p>
+            <span>{{item.aut_name}}</span>
+            &nbsp;
+            <span>{{item.comm_count}}评论</span>
+            &nbsp;
+            <span>{{item.pubdate | relativeTime}}</span>
+          </p>
+          <van-grid :column-num="3">
+            <van-grid-item icon="chat-o" text="评论" />
+            <van-grid-item icon="like-o" text="点赞" />
+            <van-grid-item icon="share" text="分享" />
+          </van-grid>
+        </div>
+      </van-cell>
     </van-list>
   </div>
 </template>
