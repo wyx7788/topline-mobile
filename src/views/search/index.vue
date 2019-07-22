@@ -51,10 +51,10 @@
       class="pd_0"
       v-for="(item, index) in searchHistories"
       :key="item">
-        <van-cell>  
+        <van-cell>
           <template slot="title">
             <div @click="handelSearch(item)" class="custom-title">{{item}}</div>
-          </template>         
+          </template>
           <van-icon
             slot="right-icon"
             name="close"

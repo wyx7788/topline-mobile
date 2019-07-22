@@ -4,7 +4,7 @@ import App from './App.vue'
 import router from './router'
 import store from './store'
 
-import Vant, { Lazyload } from 'vant'
+import Vant, { Lazyload, Toast } from 'vant'
 import 'vant/lib/index.css'
 import 'amfe-flexible'
 import './styles/index.less'
@@ -38,7 +38,7 @@ Vue.use(VeeValidate, {
 
 Validator.localize('zh_CN', zhCN)
 Vue.use(Vant)
-Vue.use(Lazyload);
+Vue.use(Lazyload)
 
 Vue.config.productionTip = false
 
@@ -48,6 +48,21 @@ Vue.prototype.$sleep = time => {
       resolve()
     }, time)
   })
+}
+
+Vue.prototype.$isLogin = () => {
+  // 校验登录状态
+  if (!store.state.user) {
+    // 没有登录状态下
+    // Toast('请登录后再评论')
+    Toast.fail('请登录后再评论')
+    router.push({
+      name: 'login'
+    })
+    return false
+  }
+  // 登录状态下
+  return true
 }
 
 new Vue({

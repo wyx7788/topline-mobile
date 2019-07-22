@@ -47,7 +47,7 @@
             <span>{{item.pubdate | relativeTime}}</span>
           </p>
           <van-grid :column-num="3">
-            <van-grid-item icon="chat-o" text="评论" />
+            <van-grid-item @click="$isLogin()" icon="chat-o" text="评论" />
             <van-grid-item icon="like-o" text="点赞" />
             <van-grid-item icon="share" text="分享" />
           </van-grid>
