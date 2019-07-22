@@ -29,7 +29,7 @@
   <!-- /联想建议 -->
 
   <!-- 历史记录 -->
-  <van-cell-group v-if="!suggestion.length && searchHistories.length">
+  <van-cell-group v-if="!serchText.length && searchHistories.length">
     <van-cell title="历史记录">
       <van-icon
         slot="right-icon"
@@ -51,7 +51,10 @@
       class="pd_0"
       v-for="(item, index) in searchHistories"
       :key="item">
-        <van-cell :title="item">
+        <van-cell>  
+          <template slot="title">
+            <div @click="handelSearch(item)" class="custom-title">{{item}}</div>
+          </template>         
           <van-icon
             slot="right-icon"
             name="close"
@@ -84,6 +87,10 @@ export default {
   created () {
     // console.log(this.searchHistories[0])
   },
+  // 清除缓存数据
+  deactivated () {
+    this.$destroy()
+  },
   watch: {
     // 监视输入框数据改变，数据发生改变，发送请求联想建议
 
@@ -93,7 +100,6 @@ export default {
       const text = newValue.trim()
       // 数据为空时，不做任何操作
       if (!text.length) {
-        this.suggestion = []
         return
       }
       try {
@@ -108,10 +114,6 @@ export default {
       window.localStorage.setItem('search-histories', JSON.stringify(this.searchHistories))
     }
   },
-  // 清除缓存数据
-  deactivated () {
-    this.$destroy()
-  },
   methods: {
     highlight (text, keyword) {
       // toLowerCase: 全部转成小写字母
@@ -122,7 +124,7 @@ export default {
     },
     // 搜索事件：搜索框输入法搜索按钮——点击联想建议搜索——跳转搜索结果页面
     handelSearch (queryText) {
-      if (!queryText && !queryText.length) {
+      if (!queryText.length) {
         return
       }
 
@@ -131,16 +133,18 @@ export default {
       const data = new Set(this.searchHistories)
       this.searchHistories = Array.from(data)
 
+      window.localStorage.setItem('search-histories', JSON.stringify(this.searchHistories))
+
       // 跳转到搜索结果页面
-      this.$router.push({
-        path: `/search/${queryText}`
-      })
       // this.$router.push({
-      //   name: 'search-result',
-      //   params: {
-      //     q: queryText
-      //   }
-      // })      
+      //   path: `/search/${queryText}`
+      // })
+      this.$router.push({
+        name: 'search-result',
+        params: {
+          q: queryText
+        }
+      })
       // this.serchText = ''
       // if (!this.serchText.length) {
       //   this.suggestion = []
