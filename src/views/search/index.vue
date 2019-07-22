@@ -7,7 +7,7 @@
     show-action
     v-model="serchText"
     @search="handelSearch(serchText)"
-    @cancel="$router.push({name:'home'})" />
+    @cancel="$router.back()" />
   </form>
   <!-- /搜索框 -->
 
@@ -29,7 +29,7 @@
   <!-- /联想建议 -->
 
   <!-- 历史记录 -->
-  <van-cell-group v-else>
+  <van-cell-group v-if="!suggestion.length && searchHistories.length">
     <van-cell title="历史记录">
       <van-icon
         slot="right-icon"
@@ -42,18 +42,22 @@
             isDeleteShow  删除状态
       -->
       <div slot="default" v-show="isDeleteShow">
-        <span style="margin-right:10px">全部删除</span>
+        <span style="margin-right:10px" @click="searchHistories=[]">全部删除</span>
         <span @click="isDeleteShow = false">完成</span>
       </div>
     </van-cell>
     <van-grid :column-num="2">
-      <van-grid-item class="pd_0">
-        <van-cell title="lishds">
+      <van-grid-item
+      class="pd_0"
+      v-for="(item, index) in searchHistories"
+      :key="item">
+        <van-cell :title="item">
           <van-icon
             slot="right-icon"
             name="close"
             style="line-height: inherit;"
             v-show="isDeleteShow"
+            @click="searchHistories.splice(index, 1)"
           />
         </van-cell>
       </van-grid-item>
@@ -72,8 +76,13 @@ export default {
     return {
       serchText: '',
       suggestion: [],
-      isDeleteShow: false
+      isDeleteShow: false,
+      // 获取本地储存的搜索历史记录,  拿不到本地储存 给一个空数组
+      searchHistories: JSON.parse(window.localStorage.getItem('search-histories')) || []
     }
+  },
+  created () {
+    // console.log(this.searchHistories[0])
   },
   watch: {
     // 监视输入框数据改变，数据发生改变，发送请求联想建议
@@ -84,6 +93,7 @@ export default {
       const text = newValue.trim()
       // 数据为空时，不做任何操作
       if (!text.length) {
+        this.suggestion = []
         return
       }
       try {
@@ -93,7 +103,14 @@ export default {
       } catch (err) {
         console.log(err)
       }
-    }, 500)
+    }, 500),
+    searchHistories () {
+      window.localStorage.setItem('search-histories', JSON.stringify(this.searchHistories))
+    }
+  },
+  // 清除缓存数据
+  deactivated () {
+    this.$destroy()
   },
   methods: {
     highlight (text, keyword) {
@@ -108,6 +125,12 @@ export default {
       if (!queryText && !queryText.length) {
         return
       }
+
+      this.searchHistories.unshift(queryText)
+      // set 数组去重
+      const data = new Set(this.searchHistories)
+      this.searchHistories = Array.from(data)
+
       // 跳转到搜索结果页面
       this.$router.push({
         path: `/search/${queryText}`
@@ -117,12 +140,25 @@ export default {
       //   params: {
       //     q: queryText
       //   }
-      // })
+      // })      
+      // this.serchText = ''
+      // if (!this.serchText.length) {
+      //   this.suggestion = []
+      // }
+      // 联想建议 与 输入框 清空
     }
   }
 }
 </script>
 
 <style lang='less' scoped>
-
+.van-grid-item{
+  width: 50%;
+}
+.van-cell__title{
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  -webkit-text-overflow: ellipsis;
+  overflow: hidden;
+}
 </style>
