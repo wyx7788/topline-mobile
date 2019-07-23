@@ -30,6 +30,11 @@ const router = new Router({
       path: '/search/:q',
       name: 'search-result',
       component: () => import('@/views/search-result')
+    },
+    {
+      path: '/article/:articleId',
+      name: 'article',
+      component: () => import('@/views/article')
     }
   ]
 })

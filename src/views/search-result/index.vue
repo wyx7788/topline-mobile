@@ -17,6 +17,12 @@
         v-for="item in searchResultlList"
         :key="item.art_id.toString()"
         :title="item.title"
+        @click="$router.push({
+          name: 'article',
+          params: {
+            articleId: item.art_id.toString()
+          }
+        })"
       >
         <!-- 插入详情  slot  -->
         <div slot="label">

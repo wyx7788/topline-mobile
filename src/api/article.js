@@ -44,3 +44,11 @@ export const reportArticle = ({
     }
   })
 }
+
+// 获取新闻文章详情
+export const getArticleContent = (articleId) => {
+  return request({
+    method: 'GET',
+    url: `/app/v1_0/articles/${articleId}`
+  })
+}

@@ -24,3 +24,21 @@ export const blackoutUsers = userId => {
     }
   })
 }
+
+// 关注用户
+export const focusOnUsers = (userId) => {
+  return request({
+    method: 'POST',
+    url: '/app/v1_0/user/followings',
+    data: {
+      target: userId
+    }
+  })
+}
+// 取消关注用户
+export const unFocusOnUsers = (userId) => {
+  return request({
+    method: 'DELETE',
+    url: `/app/v1_0/user/followings/${userId}`
+  })
+}

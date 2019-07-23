@@ -35,6 +35,12 @@
               v-for="activeItem in channelItem.articles"
               :key="activeItem.art_id.toString()"
               :title="activeItem.title"
+              @click="$router.push({
+                name:'article',
+                params: {
+                  articleId: activeItem.art_id.toString()
+                }
+              })"
             >
               <!-- 插入详情  slot  -->
               <div slot="label">
@@ -188,7 +194,7 @@ export default {
       this.activeChannel.articles.push(...data.results)
       // 数据加载完毕后  取消上了loading
       this.activeChannel.upPullLoading = false
-      console.log(data)
+      // console.log(data)
     },
     // 下拉刷新数据
     async onRefresh () {
