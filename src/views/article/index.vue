@@ -30,7 +30,7 @@
 
       <!-- 发布评论 -->
       <!-- /发布评论 -->
-    </div>  
+    </div>
   </div>
 </template>
 
@@ -57,7 +57,7 @@ export default {
     async loadArticleDetails () {
       try {
         const data = await getArticleContent(this.$route.params.articleId)
-        console.log(data)
+        // console.log(data)
         this.article = data
       } catch (error) {
         console.log(error)

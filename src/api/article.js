@@ -34,7 +34,7 @@ export const reportArticle = ({
   type,
   remark
 }) => {
-  return  request({
+  return request({
     method: 'POST',
     url: '/app/v1_0/article/reports',
     data: {

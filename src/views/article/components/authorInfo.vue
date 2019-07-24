@@ -1,7 +1,7 @@
 <template>
   <div class="auth-info">
     <div class="base-info">
-      <img class="avatar" src="https://img.yzcdn.cn/vant/logo.png" alt="">
+      <img class="avatar" :src="article.aut_photo" alt="">
       <div>
         <p>{{article.aut_name}}</p>
         <p>{{article.pubdate | relativeTime}}</p>
@@ -19,6 +19,7 @@
 
 <script>
 import { focusOnUsers, unFocusOnUsers } from '@/api/user'
+
 export default {
   name: 'AuthInfo',
   props: {
@@ -34,30 +35,28 @@ export default {
   },
   methods: {
     async focusUser () {
-      // 判断是否是登录状态
-      this.focusUserLoading = true
-
-      // 判断是否关注
-      if (this.article.is_followed) {
-        // 取消关注
-        await unFocusOnUsers(this.article.aut_id)
-        this.article.is_followed = false
-        this.$toast.success('已取消关注')
-      } else {
-        // 关注用户
-        await focusOnUsers(this.article.aut_id)
-        this.article.is_followed = true
-        this.$toast.success('关注成功')
-
+      try {
+        // 是否已登录？
+        if (!this.$checkLogin()) {
+          return
+        }
+        // 如果未登录，提示“该操作需要登录，确认登录吗？”
+        // 如果已登录，则执行
+        //    如果已关注，则取消关注
+        //    如果未关注，则关注
+        this.focusUserLoading = true
+        if (this.article.is_followed) {
+          // 取消关注
+          await unFocusOnUsers(this.article.aut_id)
+          this.article.is_followed = false
+        } else {
+          // 关注
+          await focusOnUsers(this.article.aut_id)
+          this.article.is_followed = true
+        }
+      } catch (err) {
+        console.log(err)
       }
-
-
-      // try {
-      //   await focusOnUsers(this.article.aut_id)
-      //   this.$toast.success('关注成功')
-      // } catch (error) {
-      //   this.$toast.fail('关注失败')
-      // }
       this.focusUserLoading = false
     }
   }

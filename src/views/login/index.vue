@@ -54,7 +54,7 @@ export default {
   },
   methods: {
     changeInput () {
-      console.log('change')
+      // console.log('change')
       var changeput = document.querySelector('.van-field__error-message')
       changeput.style.display = 'none'
     },
@@ -84,7 +84,7 @@ export default {
           return
         }
         const data = await login(this.user)
-        console.log(data)
+        // console.log(data)
         // 调用vueX 容器 中的 mutations 中的 setUser  更新 本地存储的user 数据
         this.$store.commit('setUser', data)
         this.$router.push({
