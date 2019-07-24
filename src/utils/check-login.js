@@ -20,8 +20,16 @@ function checkLogin () {
     message: '该操作需要登录，是否登录？'
   }).then(() => {
     router.push({
-      name: 'login'
+      name: 'login',
+      query: {
+        // 将当前路由的完整路径通过 url 传递给登录页面
+        // 非组件模块中获取当前路由使用  router.currentRoute
+        // 他和你在组件中的 this.$route  是一样的 一个东西
+        redirect: router.currentRoute.fullPath
+      }
     })
+    // 也可以这样写（等价于上面的写法）
+    // router.push('/login?redirect=' + router.currentRoute.fullPath)
   }).catch(() => {
     // on cancel
   })

@@ -87,9 +87,18 @@ export default {
         // console.log(data)
         // 调用vueX 容器 中的 mutations 中的 setUser  更新 本地存储的user 数据
         this.$store.commit('setUser', data)
-        this.$router.push({
-          name: 'home'
-        })
+        // this.$router.push({
+        //   name: 'home',
+        //   // redirect
+        // })
+        // 登录完成后返回上一次页面
+        // 方式一： back()
+        // this.$router.back()
+
+        // 方式二：
+        // 使用查询字符串记录起来
+        const redirect = this.$route.query.redirect || '/'
+        this.$router.push(redirect)
       } catch (err) {
         console.log(err)
         console.log('登录失败')
