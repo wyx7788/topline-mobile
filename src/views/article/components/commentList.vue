@@ -24,7 +24,7 @@
           <p>
             <span>{{item.pubdate | relativeTime}}</span>
             ·
-            <span>回复({{item.reply_count}})</span>
+            <span @click="handelReply">回复({{item.reply_count}})</span>
           </p>
         </div>
       </van-cell>
@@ -34,6 +34,7 @@
 
 <script>
 import { getCommentArticle } from '@/api/comment'
+import globalBus from '@/utils/global-bus'
 export default {
   name: 'CommentList',
   props: {
@@ -52,7 +53,7 @@ export default {
   },
   created () {
     // this.articleId
-    console.log(this.articleId)
+    // console.log(this.articleId)  
   },
   computed: {
     articleId () {
@@ -60,6 +61,10 @@ export default {
     }
   },
   methods: {
+    // 使用 globalBus 发布自定义事件
+    handelReply () {
+      globalBus.$emit('reply-list')
+    },
     async onLoad () {
       console.log('onload')
       try {

@@ -2,9 +2,7 @@
 <div>
   <van-popup
     :style="{ height: '80%' }"
-    :value="value"
-    round
-    @input="$emit('input', $event)"
+    v-model="isShow"
     position="bottom"
   >
   </van-popup>
@@ -12,16 +10,25 @@
 </template>
 
 <script>
+import globalBus from '@/utils/global-bus'
 export default {
   name: 'replyList',
   props: {
-    value: {
-      type: Boolean,
-      default: true
-    }
+    // value: {
+    //   type: Boolean,
+    //   default: false
+    // }
   },
   data () {
-    return {}
+    return {
+      isShow: false
+    }
+  },
+  created () {
+    // 使用 globalBus 监听自定义事件
+    globalBus.$on('reply-list', () => {
+      this.isShow = true
+    })
   }
 }
 </script>
