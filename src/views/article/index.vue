@@ -31,6 +31,10 @@
 
       <!-- 发布评论 -->
       <!-- /发布评论 -->
+
+      <!-- 回复评论列表 -->
+      <reply-list></reply-list>
+      <!-- /回复评论列表 -->
     </div>
   </div>
 </template>
@@ -39,13 +43,15 @@
 import authorInfo from './components/authorInfo'
 import moreAction from './components/moreAction'
 import commentList from './components/commentList'
+import replyList from './components/reply-list'
 import { getArticleContent } from '@/api/article'
 export default {
   name: 'articleIndex',
   components: {
     authorInfo,
     moreAction,
-    commentList
+    commentList,
+    replyList
   },
   data () {
     return {
@@ -59,7 +65,7 @@ export default {
   methods: {
     async loadArticleDetails () {
       const toast = this.$toast.loading({
-        duration: 0,       // 持续展示 toast
+        duration: 0, // 持续展示 toast
         forbidClick: true, // 禁用背景点击
         loadingType: 'spinner',
         message: '加载中...'
