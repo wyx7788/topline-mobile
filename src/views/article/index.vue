@@ -22,10 +22,11 @@
       <!-- /文章内容 -->
 
       <!-- 点赞和不喜欢 -->
-      <moreAction></moreAction>
+      <moreAction :article="article"></moreAction>
       <!-- /点赞和不喜欢 -->
 
       <!-- 评论列表 -->
+      <commentList></commentList>
       <!-- /评论列表 -->
 
       <!-- 发布评论 -->
@@ -37,12 +38,14 @@
 <script>
 import authorInfo from './components/authorInfo'
 import moreAction from './components/moreAction'
+import commentList from './components/commentList'
 import { getArticleContent } from '@/api/article'
 export default {
   name: 'articleIndex',
   components: {
     authorInfo,
-    moreAction
+    moreAction,
+    commentList
   },
   data () {
     return {
@@ -55,6 +58,12 @@ export default {
   },
   methods: {
     async loadArticleDetails () {
+      const toast = this.$toast.loading({
+        duration: 0,       // 持续展示 toast
+        forbidClick: true, // 禁用背景点击
+        loadingType: 'spinner',
+        message: '加载中...'
+      })
       try {
         const data = await getArticleContent(this.$route.params.articleId)
         // console.log(data)
@@ -63,12 +72,16 @@ export default {
         console.log(error)
         this.$toast.fail('加载失败')
       }
+      toast.clear()
     }
   }
 }
 </script>
 
 <style lang='less' scoped>
+body{
+  background: #ffffff
+}
 .box{
   padding: 100px 20px;
 }
