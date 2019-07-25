@@ -7,24 +7,24 @@
       @load="onLoad"
     >
       <van-cell
-        v-for="item in list"
-        :key="item"
+        v-for="item in comment"
+        :key="item.aut_id.toString()"
       >
         <div slot="icon">
-          <img class="avatar" src="http://toutiao.meiduo.site/Fn6-mrb5zLTZIRG3yH3jG8HrURdU" alt="">
+          <img class="avatar" :src="item.aut_photo" alt="">
         </div>
         <div slot="title">
-          <span>只是为了好玩儿</span>
+          <span>{{item.aut_name}}</span>
         </div>
         <div slot="default">
-          <van-button icon="like-o" size="mini" plain>赞</van-button>
+          <van-button :icon="item.is_liking ? 'like' : 'like-o'" size="mini" plain>赞({{item.like_count}})</van-button>
         </div>
         <div slot="label">
-          <p>hello world</p>
+          <p>{{item.content}}</p>
           <p>
-            <span>2019-7-17 14:08:20</span>
+            <span>{{item.pubdate | relativeTime}}</span>
             ·
-            <span>回复</span>
+            <span>回复({{item.reply_count}})</span>
           </p>
         </div>
       </van-cell>
@@ -33,32 +33,55 @@
 </template>
 
 <script>
+import { getCommentArticle } from '@/api/comment'
 export default {
   name: 'CommentList',
-  props: {},
-  data () {
-    return {
-      list: [],
-      loading: false,
-      finished: false
+  props: {
+    article: {
+      type: Object,
+      default: () => {}
     }
   },
-  created () {},
+  data () {
+    return {
+      comment: [],
+      loading: false,
+      finished: false,
+      offset: null
+    }
+  },
+  created () {
+    // this.articleId
+    console.log(this.articleId)
+  },
+  computed: {
+    articleId () {
+      return this.$route.params.articleId
+    }
+  },
   methods: {
-    onLoad () {
-      console.log('onLoad')
-      // 异步更新数据
-      setTimeout(() => {
-        for (let i = 0; i < 10; i++) {
-          this.list.push(this.list.length + 1)
-        }
-        // 加载状态结束
-        this.loading = false
-        // 数据全部加载完成
-        if (this.list.length >= 40) {
+    async onLoad () {
+      console.log('onload')
+      try {
+        const data = await getCommentArticle({
+          articleId: this.articleId,
+          offset: this.offset,
+          limit: 10
+        })
+        // 如果没有评论数据，就  评论加载完毕
+        if (!data.results.length) {
           this.finished = true
+          this.loading = false
+          return
         }
-      }, 500)
+        // 如果 有评论数据， 就将数据添加（push）到评论列表当中
+        this.comment.push(...data.results)
+        console.log(data)
+        this.loading = false
+        this.offset = data.last_id
+      } catch (err) {
+
+      }
     }
   }
 }
