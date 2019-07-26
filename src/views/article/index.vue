@@ -30,7 +30,7 @@
       <!-- /评论列表 -->
 
       <!-- 发布评论 -->
-      <add-comment :target="articleId"></add-comment>
+      <add-comment :target="articleId" :article="article"></add-comment>
       <!-- /发布评论 -->
 
       <!-- 回复评论列表 -->
