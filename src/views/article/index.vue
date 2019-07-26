@@ -34,7 +34,7 @@
       <!-- /发布评论 -->
 
       <!-- 回复评论列表 -->
-      <reply-list></reply-list>
+      <reply-list :articleId="articleId"></reply-list>
       <!-- /回复评论列表 -->
     </div>
   </div>

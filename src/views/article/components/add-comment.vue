@@ -49,8 +49,9 @@ export default {
           articleId: this.articleId, // 对文章进行评论，不要传此参数。
         })
         this.content = ''
+        this.$toast.success('评论发布成功！')
       } catch (err) {
-
+        this.$toast.fail('评论失败！')
       }
     }
   }

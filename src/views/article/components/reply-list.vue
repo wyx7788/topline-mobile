@@ -34,6 +34,15 @@
     </commentList>
     <!-- /回复的评论列表 -->
 
+    <!-- 回复评论 -->
+    <add-comment
+    class="addComment"
+    v-if="isShow"
+    :target="comment.com_id.toString()"
+    :articleId="articleId"
+    ></add-comment>
+    <!-- /回复评论 -->
+
   </van-popup>
 </div>
 </template>
@@ -41,16 +50,22 @@
 <script>
 import globalBus from '@/utils/global-bus'
 import commentList from './commentList'
+import addComment from './add-comment'
 export default {
   name: 'replyList',
   components: {
-    commentList
+    commentList,
+    addComment
   },
   props: {
     // value: {
     //   type: Boolean,
     //   default: false
     // }
+    articleId: {
+      type: [Number, String],
+      required: true
+    }
   },
   data () {
     return {
@@ -74,5 +89,8 @@ export default {
   .van-button--mini{
     float: right
   }
+}
+.addComment{
+  z-index: 9999;
 }
 </style>
