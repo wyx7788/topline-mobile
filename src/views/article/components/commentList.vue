@@ -24,7 +24,7 @@
           <p>
             <span>{{item.pubdate | relativeTime}}</span>
             ·
-            <span @click="handelReply">回复({{item.reply_count}})</span>
+            <span @click="handelReply(item)">回复({{item.reply_count}})</span>
           </p>
         </div>
       </van-cell>
@@ -62,8 +62,8 @@ export default {
   },
   methods: {
     // 使用 globalBus 发布自定义事件
-    handelReply () {
-      globalBus.$emit('reply-list')
+    handelReply (item) {
+      globalBus.$emit('reply-list', item)
     },
     async onLoad () {
       console.log('onload')
@@ -93,10 +93,4 @@ export default {
 </script>
 
 <style lang="less" scoped>
-.avatar {
-  width: 50px;
-  height: 50px;
-  border-radius: 100%;
-  margin-right: 10px;
-}
 </style>
