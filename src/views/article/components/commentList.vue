@@ -33,14 +33,27 @@
 </template>
 
 <script>
-import { getCommentArticle } from '@/api/comment'
+import { getComments } from '@/api/comment'
 import globalBus from '@/utils/global-bus'
 export default {
   name: 'CommentList',
   props: {
-    article: {
+    // article: {
+    //   type: Object,
+    //   default: () => {}
+    // },
+
+    // 布尔值， 判断你是要加载文章评论，还是要加载评论回复
+    isArticle: {
       type: Object,
-      default: () => {}
+      default: true
+    },
+
+    // source 是文章id  或者是 评论的id
+    // 文章id 用于获取文章评论，  评论id 用于获取评论的回复
+    source: {
+      type: [Number, String],
+      required: true
     }
   },
   data () {
@@ -51,15 +64,12 @@ export default {
       offset: null
     }
   },
-  created () {
-    // this.articleId
-    // console.log(this.articleId)  
-  },
-  computed: {
-    articleId () {
-      return this.$route.params.articleId
-    }
-  },
+  created () {},
+  // computed: {
+  //   articleId () {
+  //     return this.$route.params.articleId
+  //   }
+  // },
   methods: {
     // 使用 globalBus 发布自定义事件
     handelReply (item) {
@@ -68,8 +78,9 @@ export default {
     async onLoad () {
       console.log('onload')
       try {
-        const data = await getCommentArticle({
-          articleId: this.articleId,
+        const data = await getComments({
+          isArticle: this.isArticle,
+          source: this.source,
           offset: this.offset,
           limit: 10
         })

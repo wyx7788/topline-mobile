@@ -26,7 +26,7 @@
       <!-- /点赞和不喜欢 -->
 
       <!-- 评论列表 -->
-      <commentList :article='article'></commentList>
+      <commentList :source='articleId'></commentList>
       <!-- /评论列表 -->
 
       <!-- 发布评论 -->
@@ -56,6 +56,11 @@ export default {
   data () {
     return {
       article: {}
+    }
+  },
+  computed: {
+    articleId () {
+      return this.$route.params.articleId
     }
   },
   created () {

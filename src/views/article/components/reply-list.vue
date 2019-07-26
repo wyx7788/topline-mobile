@@ -13,7 +13,7 @@
         <span style="margin-right:10px">{{comment.aut_name}}</span>
         <van-tag plain type="primary">楼主</van-tag>
       </div>
-      
+
       <div class="reply_box" slot="label">
         <p>{{comment.content}}</p>
         <p>
