@@ -36,7 +36,7 @@
 import { getComments } from '@/api/comment'
 import globalBus from '@/utils/global-bus'
 export default {
-  name: 'CommentList',
+  name: 'commentList',
   props: {
     // article: {
     //   type: Object,
@@ -45,7 +45,7 @@ export default {
 
     // 布尔值， 判断你是要加载文章评论，还是要加载评论回复
     isArticle: {
-      type: Object,
+      type: Boolean,
       default: true
     },
 
@@ -92,7 +92,7 @@ export default {
         }
         // 如果 有评论数据， 就将数据添加（push）到评论列表当中
         this.comment.push(...data.results)
-        console.log(data)
+        // console.log(data)
         this.loading = false
         this.offset = data.last_id
       } catch (err) {

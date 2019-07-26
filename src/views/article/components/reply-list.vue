@@ -24,14 +24,28 @@
         </p>
       </div>
     </van-cell>
+
+    <!-- 回复的评论列表 -->   
+    <commentList
+    v-if="isShow"
+    :source="comment.com_id.toString()"
+    :isArticle="false"
+    >
+    </commentList>
+    <!-- /回复的评论列表 -->
+
   </van-popup>
 </div>
 </template>
 
 <script>
 import globalBus from '@/utils/global-bus'
+import commentList from './commentList'
 export default {
   name: 'replyList',
+  components: {
+    commentList
+  },
   props: {
     // value: {
     //   type: Boolean,
@@ -55,7 +69,10 @@ export default {
 </script>
 
 <style lang='less' scoped>
-.reply_box .van-button--mini{
-  float: right
+.reply_box{
+  padding-bottom: 20px;
+  .van-button--mini{
+    float: right
+  }
 }
 </style>
