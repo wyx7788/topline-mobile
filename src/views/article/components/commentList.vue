@@ -76,7 +76,7 @@ export default {
       globalBus.$emit('reply-list', item)
     },
     async onLoad () {
-      console.log('onload')
+      // console.log('onload')
       try {
         const data = await getComments({
           isArticle: this.isArticle,

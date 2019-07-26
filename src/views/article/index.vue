@@ -30,6 +30,7 @@
       <!-- /评论列表 -->
 
       <!-- 发布评论 -->
+      <add-comment :target="articleId"></add-comment>
       <!-- /发布评论 -->
 
       <!-- 回复评论列表 -->
@@ -44,6 +45,7 @@ import authorInfo from './components/authorInfo'
 import moreAction from './components/moreAction'
 import commentList from './components/commentList'
 import replyList from './components/reply-list'
+import addComment from './components/add-comment'
 import { getArticleContent } from '@/api/article'
 export default {
   name: 'articleIndex',
@@ -51,7 +53,8 @@ export default {
     authorInfo,
     moreAction,
     commentList,
-    replyList
+    replyList,
+    addComment
   },
   data () {
     return {
