@@ -111,6 +111,9 @@
     @blackout-users="handleRemoveCurrentArticle"
     ></moreAction>
     <!-- 自定义事件 绑定 remove-article-->
+
+    <footer-layout></footer-layout>
+
   </div>
 </template>
 
@@ -119,6 +122,7 @@ import { getUserChannels } from '@/api/channels'
 import { getArticles } from '@/api/article'
 import homeChannel from './components/channel'
 import moreAction from './components/more-action'
+import footerLayout from '@/views/footer-layout'
 
 export default {
   name: 'home',
@@ -133,7 +137,8 @@ export default {
   },
   components: {
     homeChannel,
-    moreAction
+    moreAction,
+    footerLayout
   },
   watch: {
     // 监视登录状态下 ，加载频道以及对应的数据

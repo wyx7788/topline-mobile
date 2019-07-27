@@ -7,20 +7,14 @@ const router = new Router({
   routes: [
     {
       path: '/',
-      component: () => import('@/views/footer-layout'),
-      children: [
-        {
-          path: '',
-          name: 'home',
-          component: () => import('@/views/home')
-        },
-        {
-          path: '/my',
-          name: 'my',
-          component: () => import('@/views/my')
+      name: 'home',
+      component: () => import('@/views/home')
+    },
+    {
+      path: '/my',
+      name: 'my',
+      component: () => import('@/views/my')
 
-        }
-      ]
     },
     {
       path: '/login',
@@ -41,6 +35,11 @@ const router = new Router({
       path: '/article/:articleId',
       name: 'article',
       component: () => import('@/views/article')
+    },
+    {
+      path: '/user-profile',
+      name: 'user-profile',
+      component: () => import('@/views/user-profile')
     }
   ]
 })
