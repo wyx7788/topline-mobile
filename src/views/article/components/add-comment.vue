@@ -50,6 +50,7 @@ export default {
     }
   },
   methods: {
+    // 发布评论
     async handelAddComment () {
       if (!this.$checkLogin()) {
         return
@@ -66,7 +67,11 @@ export default {
         this.$toast.fail('评论失败！')
       }
     },
+    // 文章收藏
     async handelCollected () {
+      if (!this.$checkLogin()) {
+        return
+      }
       try {
         const articleId = this.article.art_id
         if (this.article.is_collected) {

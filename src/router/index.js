@@ -13,6 +13,12 @@ const router = new Router({
           path: '',
           name: 'home',
           component: () => import('@/views/home')
+        },
+        {
+          path: '/my',
+          name: 'my',
+          component: () => import('@/views/my')
+
         }
       ]
     },
