@@ -10,7 +10,10 @@
   />
   <div class="userlist">
     <van-cell-group>
-      <van-cell title="头像" is-link>
+      <van-cell 
+      title="头像"
+      @click="isUploadImages = true"
+      is-link>
         <template slot="default">
           <img class="user_photo" :src="userProfile.photo" alt="">
         </template>
@@ -32,6 +35,7 @@
   <!-- 生日 -->
   <birth-day v-model="isBirthdayShow" :userProfile="userProfile"/>
   <!-- /生日 -->
+  <upload-images v-model="isUploadImages"></upload-images>
 </div>
 </template>
 
@@ -40,6 +44,7 @@ import { getCurrentUserProfile, serveUserProfile } from '@/api/user'
 import genderComponent from './components/gender-component'
 import nameTitle from './components/name-title'
 import birthDay from './components/birth-day'
+import uploadImages from './components/upload-images'
 export default {
   name: 'userProfile',
   data () {
@@ -47,13 +52,15 @@ export default {
       userProfile: {},
       genderShow: false,
       isNameShow: false,
-      isBirthdayShow: false
+      isBirthdayShow: false,
+      isUploadImages: false
     }
   },
   components: {
     genderComponent,
     nameTitle,
-    birthDay
+    birthDay,
+    uploadImages
   },
   created () {
     this.loadUserProfile()

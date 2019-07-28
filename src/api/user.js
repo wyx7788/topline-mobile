@@ -89,3 +89,14 @@ export const serveUserProfile = ({
     }
   })
 }
+
+// 上传照片接口
+export const uploadImagesApi = (photo) => {
+  return request({
+    method: 'PATCH',
+    url: '/app/v1_0/user/photo',
+    data: {
+      photo
+    }
+  })
+}
