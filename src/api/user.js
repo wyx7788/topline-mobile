@@ -90,12 +90,16 @@ export const serveUserProfile = ({
 }
 
 // 上传照片接口
-export const uploadImagesApi = (photo) => {
+export const uploadImagesApi = (name, file) => {
+  const formData = new FormData()
+  formData.append(name, file)
   return request({
     method: 'PATCH',
     url: '/app/v1_0/user/photo',
-    data: {
-      photo
-    }
+    // Content-Type multipart/form-data
+    // XHR 2.0 新增的那个 FormData 对象
+    data: formData
+    // Content-Type application/json 数据传递一个普通对象
+    // data: {}
   })
 }

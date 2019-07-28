@@ -35,7 +35,9 @@
   <!-- 生日 -->
   <birth-day v-model="isBirthdayShow" :userProfile="userProfile"/>
   <!-- /生日 -->
-  <upload-images v-model="isUploadImages"></upload-images>
+  <upload-images
+  @upload-success="userProfile.photo = $event"
+  v-model="isUploadImages"></upload-images>
 </div>
 </template>
 
@@ -71,7 +73,7 @@ export default {
       this.userProfile.gender = value
     },
     async handleSave () {
-      console.log('handleSave')
+      console.log(this.userProfile)
       try {
         await serveUserProfile(this.userProfile)
         this.$toast.success('保存成功！')
