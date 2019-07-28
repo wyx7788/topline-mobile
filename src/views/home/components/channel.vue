@@ -147,7 +147,7 @@ export default {
       } else {
         // 编辑状态下——删除频道
         // 判断是否是推荐频道
-        console.log(this.aliveChannels)
+        // console.log(this.aliveChannels)
         !this.aliveChannels.includes(item.name) && this.deleteChannel(item, index)
       }
     },
@@ -162,7 +162,7 @@ export default {
         item.upPullLoading = false // 上拉加载状态
         item.upPullFinished = false // 是否加载完毕
       })
-      console.log(data)
+      // console.log(data)
       this.allChannels = data.channels
     },
     // 点击向我的频道添加数据
@@ -180,7 +180,7 @@ export default {
             seq: index + 2 // 频道序号
           }
         })
-        console.log(data)
+        // console.log(data)
         // 登录状态下，将数据请求添加到后端
         await resetUserChannels(data)
         return
