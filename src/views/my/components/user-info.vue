@@ -1,7 +1,7 @@
 <template>
   <van-cell-group class="user-info">
     <van-cell
-      class="base-info" 
+      class="base-info"
       is-link
       :border="false"
       @click="$router.push({name: 'user-profile'})"
@@ -43,13 +43,10 @@ export default {
     }
   },
   data () {
-    return{
-    }
+    return{}
   },
-  created () {    
-  },
-  methods: {   
-  }
+  created () {},
+  methods: {}
 }
 </script>
 

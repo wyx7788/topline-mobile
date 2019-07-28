@@ -33,7 +33,7 @@ export default {
     return {
       currentDate: new Date(),
       minDate: new Date(1542, 1, 1),
-      maxDate: new Date(2019, 10, 1),
+      maxDate: new Date(2019, 10, 1)
     }
   },
   created () {

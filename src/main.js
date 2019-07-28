@@ -4,7 +4,7 @@ import App from './App.vue'
 import router from './router'
 import store from './store'
 
-import Vant, { Lazyload, Toast } from 'vant'
+import Vant, { Lazyload, Toast, ImagePreview } from 'vant'
 import 'vant/lib/index.css'
 import 'amfe-flexible'
 import './styles/index.less'
@@ -41,6 +41,7 @@ Vue.use(VeeValidate, {
 Validator.localize('zh_CN', zhCN)
 Vue.use(Vant)
 Vue.use(Lazyload)
+Vue.use(ImagePreview)
 
 Vue.config.productionTip = false
 

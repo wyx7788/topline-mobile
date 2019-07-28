@@ -10,7 +10,7 @@
   />
   <div class="userlist">
     <van-cell-group>
-      <van-cell 
+      <van-cell
       title="头像"
       @click="isUploadImages = true"
       is-link>
