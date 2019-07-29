@@ -75,7 +75,12 @@ export default {
     async handleSave () {
       console.log(this.userProfile)
       try {
-        await serveUserProfile(this.userProfile)
+        await serveUserProfile({
+          // photo: this.userProfile.photo,
+          name: this.userProfile.name,
+          gender: this.userProfile.gender,
+          birthday: this.userProfile.birthday
+        })
         this.$toast.success('保存成功！')
       } catch (err) {
         console.log(err)

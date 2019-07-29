@@ -47,14 +47,14 @@ export default {
       //   'https://img.yzcdn.cn/2.jpg'
       // ])
       const reader = new FileReader()
-      console.log(this.file.files[0]) // dom元素
+      // console.log(this.file.files[0]) // dom元素
       reader.readAsDataURL(this.file.files[0])
       // readAsDataURL 方法会读取指定的 Blob 或 File 对象。
       // 读取操作完成的时候，readyState 会变成已完成DONE，
       // 并触发 loadend 事件，
       // 同时 result 属性将包含一个data:URL格式的字符串（base64编码）
       // 以表示所读取文件的内容。
-      console.log(reader)
+      // console.log(reader)
       reader.onload = () => {
         // console.log(reader.result)  // base64 编码的图片文件
         this.previewImage = ImagePreview({
@@ -91,6 +91,7 @@ export default {
           message: '头像上传中'
         })
         const data = await uploadImagesApi('photo', this.file.files[0])
+        // console.log(data)
         this.$toast.success('更新头像成功')
         this.$emit('upload-success', data.photo)
         // 清除loading
