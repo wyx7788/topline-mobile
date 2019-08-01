@@ -40,6 +40,11 @@ const router = new Router({
       path: '/user-profile',
       name: 'user-profile',
       component: () => import('@/views/user-profile')
+    },
+    {
+      path: '/chat',
+      name: 'chat',
+      component: () => import('@/views/chat')
     }
   ]
 })

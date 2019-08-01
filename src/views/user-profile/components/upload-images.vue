@@ -75,6 +75,7 @@ export default {
         // console,log(this)
         // 关闭图片预览
         this.previewImage.close()
+        // 关闭弹框
         this.$emit('input', false)
         this.upLoadPhoto()
       }).catch(() => {
