@@ -12,7 +12,7 @@
     "axios": "^0.19.0",
     "core-js": "^2.6.5",
     "dayjs": "^1.8.15",
-    "json-bigint": "^0.3.0",
+    "json-bigint": "^1.0.0",
     "lodash": "^4.17.15",
     "socket.io": "^2.2.0",
     "vant": "^2.0.6",
